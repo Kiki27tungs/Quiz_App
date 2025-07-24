@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Python Quiz App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #5f2c82, #49a09d);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #fff;
+    }
+    .quiz-container {
+      background: #1e1e2f;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      padding: 30px;
+      width: 400px;
+    }
+    .quiz-container h1 {
+      text-align: center;
+      color: #ffd43b;
+      margin-bottom: 20px;
+    }
+    .question {
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+    .choices label {
+      display: block;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+    .submit-btn {
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      font-size: 16px;
+      width: 100%;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    .submit-btn:hover {
+      opacity: 0.9;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <h1>🐍 Python Quiz App </h1>
+    <div class="question" id="question"></div>
+    <div class="choices" id="choices"></div>
+    <button class="submit-btn" onclick="submitAnswer()">Submit</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+      { question: "What is the output of the following code?\nprint(2 ** 3)", choices: ["A. 6", "B. 8", "C. 9", "D. 12"], answer: "B" },
+      { question: "Which of the following is a mutable data type in Python?", choices: ["A. Tuple", "B. String", "C. List", "D. Integer"], answer: "C" },
+      { question: "What is the correct syntax to create a function in Python?", choices: ["A. def functionName():", "B. function functionName()", "C. create function functionName()", "D. functionName()"], answer: "A" },
+      { question: "How do you insert an element at the end of a list in Python?", choices: ["A. list.add(element)", "B. list.append(element)", "C. list.insert(element)", "D. list.push(element)"], answer: "B" },
+      { question: "What is the output of the following code?\nx = [1, 2, 3]\nprint(x[1])", choices: ["A. 1", "B. 2", "C. 3", "D. Error"], answer: "B" },
+      { question: "Which of the following is used to handle exceptions in Python?", choices: ["A. try and except", "B. catch and throw", "C. handle and except", "D. try and catch"], answer: "A" },
+      { question: "What is the output of the following code?\nfor i in range(3):\n    print(i)", choices: ["A. 0 1 2", "B. 1 2 3", "C. 0 1 2 3", "D. 1 2 3 4"], answer: "A" },
+      { question: "Which method removes whitespace from beginning and end of a string?", choices: ["A. strip()", "B. trim()", "C. remove()", "D. delete()"], answer: "A" },
+      { question: "What is the output of this code?\nx = {'a': 1, 'b': 2}\nprint(x['a'])", choices: ["A. 1", "B. 2", "C. 'a'", "D. Error"], answer: "A" },
+      { question: "Correct way to import a module in Python?", choices: ["A. import module", "B. include module", "C. require module", "D. using module"], answer: "A" }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    const questionEl = document.getElementById("question");
+    const choicesEl = document.getElementById("choices");
+    const resultEl = document.getElementById("result");
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      questionEl.textContent = q.question;
+      choicesEl.innerHTML = "";
+      q.choices.forEach((choice, index) => {
+        const label = document.createElement("label");
+        label.innerHTML = `
+          <input type="radio" name="answer" value="${choice.charAt(0)}"> ${choice}
+        `;
+        choicesEl.appendChild(label);
+      });
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="answer"]:checked');
+      if (!selected) {
+        alert("Please select an answer!");
+        return;
+      }
+
+      if (selected.value === questions[currentQuestion].answer) {
+        score++;
+      }
+
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      questionEl.style.display = "none";
+      choicesEl.style.display = "none";
+      document.querySelector(".submit-btn").style.display = "none";
+      resultEl.innerHTML = `🎉 Your score is <strong>${score}/${questions.length}</strong>`;
+    }
+
+    loadQuestion();
+  </script>
+
+</body>
+</html>
